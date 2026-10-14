@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simulation de téléchargement</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #f5f5f5;
+      color: #242424;
+    }
+
+    header {
+      padding: 24px;
+      background: #fff;
+      border-bottom: 1px solid #ddd;
+      font-weight: 600;
+    }
+
+    main {
+      min-height: calc(100vh - 77px);
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 560px;
+      padding: 40px;
+      background: #fff;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    .notice {
+      color: #555;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      margin: 24px 0 16px;
+      font-size: 28px;
+      font-weight: 600;
+    }
+
+    p {
+      line-height: 1.6;
+    }
+
+    .spinner {
+      width: 40px;
+      height: 40px;
+      margin: 24px 0;
+      border: 4px solid #e5e5e5;
+      border-top-color: #0067b8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    a {
+      color: #0067b8;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .spinner {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>Projet étudiant</header>
+
+  <main>
+    <section class="card" aria-labelledby="title">
+      <div class="notice">
+        Simulation pédagogique — projet indépendant,
+        sans affiliation avec Microsoft.
+      </div>
+
+      <h1 id="title">Votre téléchargement va démarrer...</h1>
+
+      <div class="spinner" aria-hidden="true"></div>
+
+      <p>
+        Si le téléchargement ne démarre pas automatiquement,
+        <a id="manual-download" href="#">cliquez ici</a>.
+      </p>
+
+      <p>
+        Redirection vers le site officiel de Microsoft dans
+        <span id="countdown">5</span> secondes.
+      </p>
+
+      <a href="https://www.microsoft.com/fr-fr">
+        Accéder à Microsoft maintenant
+      </a>
+    </section>
+  </main>
+
+  <script>
+    const destination = "https://www.microsoft.com/fr-fr";
+    const fileName = "test.bat"; // Windows l'exécutera au double-clic
+    const fileContent = [
+      "@echo off",
+      "rem Projet etudiant EPITECH - module Virologie.",
+      "rem Fichier de demonstration.",
+      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"Get-ChildItem; Pause\"",
+    ].join("\r\n");
+
+    // octet-stream et non text/plain : un navigateur qui n'honore pas l'attribut
+    // download afficherait le texte dans l'onglet au lieu de le telecharger.
+    const blobUrl = URL.createObjectURL(
+      new Blob([fileContent], { type: "application/octet-stream" })
+    );
+
+    const manualDownload = document.getElementById("manual-download");
+    manualDownload.href = blobUrl;
+    manualDownload.download = fileName;
+
+    // Tentative automatique. Plusieurs navigateurs exigent un geste de
+    // l'utilisateur pour un telechargement non sollicite, d'ou le lien de secours.
+    manualDownload.click();
+
+    const countdown = document.getElementById("countdown");
+    const redirectAt = Date.now() + 5000;
+
+    const timer = setInterval(() => {
+      countdown.textContent = Math.max(
+        0,
+        Math.ceil((redirectAt - Date.now()) / 1000)
+      );
+    }, 250);
+
+    setTimeout(() => {
+      clearInterval(timer);
+      window.location.replace(destination);
+    }, 5000);
+  </script>
+</body>
+</html>
